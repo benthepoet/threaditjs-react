@@ -7,7 +7,7 @@ const thunk = require('redux-thunk').default;
 
 // Local Modules
 const reducers = require('./reducers');
-const App = require('./containers/App.jsx');
+const App = require('./containers/App');
 
 const store = createStore(reducers, applyMiddleware(thunk));
 

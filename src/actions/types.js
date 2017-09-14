@@ -1,3 +1,5 @@
 module.exports = {
+    CHANGE_POST: 'CHANGE_POST',
+    CREATE_THREAD: 'CREATE_THREAD',
     GET_THREADS: 'GET_THREADS'
 };

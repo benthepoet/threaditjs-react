@@ -1,8 +1,19 @@
 const { API_URL } = require('../constants');
 
 module.exports = {
+    createThread,
     getThreads
 };
+
+function createThread(text) {
+    const options = {
+        contentType: 'application/json',
+        data: { text },
+        method: 'POST'
+    };
+    
+    return request('/threads/create', options);
+}
 
 function getThreads() {
     return request('/threads');

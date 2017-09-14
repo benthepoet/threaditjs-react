@@ -3,7 +3,7 @@ const { bindActionCreators } = require('redux');
 const { connect } = require('react-redux');
 
 const Actions = require('../actions');
-const ThreadList = require('../components/ThreadList.jsx');
+const ThreadList = require('../components/ThreadList');
 
 class App extends React.Component {
     componentDidMount() {
@@ -11,7 +11,11 @@ class App extends React.Component {
     }
     
     render() {
-        return <ThreadList threads={this.props.threads} />;
+        return <ThreadList 
+            onPostChange={this.props.actions.changePost}
+            onPostSubmit={this.props.actions.createThread}
+            post={this.props.post}
+            threads={this.props.threads} />;
     }
 }
 
@@ -26,6 +30,9 @@ function mapDispatchToProps(dispatch) {
     };
 };
 
-function mapStateToProps({ threads }) {
-    return { threads };
+function mapStateToProps({ post, threads }) {
+    return { 
+        post,
+        threads 
+    };
 }
