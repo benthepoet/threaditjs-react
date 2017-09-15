@@ -1,11 +1,15 @@
 // Local Modules
-const { CHANGE_POST, CREATE_THREAD, GET_THREADS } = require('./types'); 
+const { CHANGE_POST, CHANGE_REPLY, CLEAR_COMMENTS, CREATE_THREAD, GET_COMMENTS, GET_THREADS, START_REPLY } = require('./types'); 
 const Api = require('../services/api');
 
 module.exports = {
+    changeReply,
     changePost,
+    clearComments,
     createThread,
-    getThreads
+    getComments,
+    getThreads,
+    startReply
 };
 
 function changePost(event) {
@@ -13,6 +17,18 @@ function changePost(event) {
         type: CHANGE_POST,
         post: event.target.value     
     };
+}
+
+function changeReply(id, event) {
+    return {
+        type: CHANGE_REPLY,
+        reply: event ? event.target.value : '',
+        id
+    };
+}
+
+function clearComments() {
+    return { type: CLEAR_COMMENTS };
 }
 
 function createThread(event, text) {
@@ -35,15 +51,35 @@ function createThread(event, text) {
     };
 }
 
+function getComments(id) {
+    return dispatch => {
+        Api
+            .getComments(id)
+            .then(comments => {
+                dispatch({
+                    type: GET_COMMENTS,
+                    comments
+                });
+            });
+    };
+}
+
 function getThreads() {
     return dispatch => {
         Api
             .getThreads()
-            .then(({ data }) => {
+            .then(threads => {
                 dispatch({
                     type: GET_THREADS,
-                    threads: data
+                    threads
                 });
             });
+    };
+}
+
+function startReply(id) {
+    return {
+        type: START_REPLY,
+        id
     };
 }

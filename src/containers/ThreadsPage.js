@@ -5,7 +5,7 @@ const { connect } = require('react-redux');
 const Actions = require('../actions');
 const ThreadList = require('../components/ThreadList');
 
-class App extends React.Component {
+class ThreadsPage extends React.Component {
     componentDidMount() {
         this.props.actions.getThreads();
     }
@@ -22,7 +22,7 @@ class App extends React.Component {
 module.exports = connect(
     mapStateToProps,
     mapDispatchToProps
-)(App);
+)(ThreadsPage);
 
 function mapDispatchToProps(dispatch) {
     return {

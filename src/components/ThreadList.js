@@ -1,12 +1,17 @@
 const React = require('react');
+const { Link } = require('react-router-dom');
 
-const Thread = thread => (
-    <div key={thread.id}>
-        <a href="">{T.trimTitle(thread.text)}</a>
-        <p className="comment_count">{thread.comment_count} comment(s)</p>
-        <hr />
-    </div>
-)
+const Thread = thread => {
+    const link = `/thread/${thread.id}`;
+    
+    return (
+        <div key={thread.id}>
+            <Link to={link}>{thread.text}</Link>
+            <p className="comment_count">{thread.comment_count} comment(s)</p>
+            <hr />
+        </div>
+    );
+};
 
 const ThreadList = ({ onPostChange, onPostSubmit, post, threads }) => (
     <div className="thread-list">

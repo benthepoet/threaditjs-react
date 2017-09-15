@@ -2,6 +2,7 @@ const { API_URL } = require('../constants');
 
 module.exports = {
     createThread,
+    getComments,
     getThreads
 };
 
@@ -15,8 +16,39 @@ function createThread(text) {
     return request('/threads/create', options);
 }
 
+function getComments(id) {
+    return request(`/comments/${id}`)
+        .then(({ data }) => {
+            const comments = { 
+                lookup: {}, 
+                replies: {}
+            };
+            
+            data.forEach(comment => {
+                const { parent_id } = comment;
+                
+                if (parent_id) {
+                    comments.lookup[parent_id] = comments.lookup[parent_id] || [];
+                    comments.lookup[parent_id].push(comment);
+                } else {
+                    comments.root = comment;
+                }
+            });
+            
+            return comments;
+        });
+}
+
 function getThreads() {
-    return request('/threads');
+    return request('/threads')
+        .then(({ data }) => {
+            return data.map(thread => {
+                return {
+                    ...thread,
+                    text: T.trimTitle(thread.text)
+                };
+            });
+        });
 }
 
 function request(url, options = {}) {
