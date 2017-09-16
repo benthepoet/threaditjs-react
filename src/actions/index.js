@@ -1,5 +1,5 @@
 // Local Modules
-const { CHANGE_POST, CHANGE_REPLY, CLEAR_COMMENTS, CREATE_THREAD, GET_COMMENTS, GET_THREADS, START_REPLY } = require('./types'); 
+const { CHANGE_POST, CHANGE_REPLY, CLEAR_COMMENTS, CREATE_THREAD, GET_COMMENTS, GET_THREADS, SUBMIT_REPLY } = require('./types'); 
 const Api = require('../services/api');
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
     createThread,
     getComments,
     getThreads,
-    startReply
+    submitReply
 };
 
 function changePost(event) {
@@ -77,9 +77,18 @@ function getThreads() {
     };
 }
 
-function startReply(id) {
-    return {
-        type: START_REPLY,
-        id
+function submitReply(parent, text, event) {
+    event.preventDefault();
+    
+    return dispatch => {
+        Api
+            .createComment(parent, text)
+            .then(comment => {
+                dispatch({
+                    type: SUBMIT_REPLY,
+                    comment,
+                    parent
+                });
+            });
     };
 }

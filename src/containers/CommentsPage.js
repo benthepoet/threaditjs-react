@@ -18,7 +18,8 @@ class CommentsPage extends React.Component {
     render() {
         return <CommentList 
             comments={this.props.comments}
-            onChangeReply={this.props.actions.changeReply} />;
+            onChangeReply={this.props.actions.changeReply}
+            onSubmitReply={this.props.actions.submitReply} />;
     }
 }
 

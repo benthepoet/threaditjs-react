@@ -1,10 +1,25 @@
 const { API_URL } = require('../constants');
 
 module.exports = {
+    createComment,
     createThread,
     getComments,
     getThreads
 };
+
+function createComment(parent, text) {
+    const options = {
+        contentType: 'application/json',
+        data: { 
+            parent,
+            text
+        },
+        method: 'POST'
+    };
+    
+    return request('/comments/create', options)
+        .then(({ data }) => data);
+}
 
 function createThread(text) {
     const options = {

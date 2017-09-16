@@ -2,23 +2,26 @@ const React = require('react');
 
 module.exports = CommentList;
 
-function Comment({ comment, lookup, replies, onChangeReply }) {
+function Comment({ comment, lookup, replies, onChangeReply, onSubmitReply }) {
     const children = lookup[comment.id];
     const reply = replies[comment.id];
-    const preview = () => {
-      return {
-          __html: T.previewComment(reply)
-      };  
-    };
+    
+    const text = () => ({
+        __html: comment.text
+    });
+    
+    const preview = () => ({
+        __html: T.previewComment(reply)  
+    });
     
     return (
         <div className="comment">
-            <p>{comment.text}</p>
+            <p dangerouslySetInnerHTML={text()}></p>
             <div className="reply">
                 { reply === undefined ? (
                     <a onClick={() => onChangeReply(comment.id)}>Reply</a>
                 ) : (
-                    <form>
+                    <form onSubmit={(event) => onSubmitReply(comment.id, reply, event)}>
                         <textarea onInput={(event) => onChangeReply(comment.id, event)} value={reply}></textarea>
                         <input type="submit" value="Reply" />
                         <div className="preview" dangerouslySetInnerHTML={preview()}>
@@ -34,7 +37,8 @@ function Comment({ comment, lookup, replies, onChangeReply }) {
                             comment={child} 
                             lookup={lookup}
                             replies={replies}
-                            onChangeReply={onChangeReply} />)
+                            onChangeReply={onChangeReply}
+                            onSubmitReply={onSubmitReply} />)
                     }
                 </div>
             }
@@ -42,7 +46,7 @@ function Comment({ comment, lookup, replies, onChangeReply }) {
     );
 }
 
-function CommentList({ comments, onChangeReply }) {
+function CommentList({ comments, onChangeReply, onSubmitReply }) {
     if (!comments.root) {
         return null;
     }
@@ -53,7 +57,8 @@ function CommentList({ comments, onChangeReply }) {
                 comment={comments.root} 
                 lookup={comments.lookup} 
                 replies={comments.replies}
-                onChangeReply={onChangeReply} />
+                onChangeReply={onChangeReply}
+                onSubmitReply={onSubmitReply} />
         </div>
     );
 };
