@@ -1,4 +1,4 @@
-const { API_URL } = require('../constants');
+const ThreadIt = require('./threadit');
 
 module.exports = {
     createComment,
@@ -60,7 +60,7 @@ function getThreads() {
             return data.map(thread => {
                 return {
                     ...thread,
-                    text: T.trimTitle(thread.text)
+                    text: ThreadIt.trimTitle(thread.text)
                 };
             });
         });
@@ -72,7 +72,7 @@ function request(url, options = {}) {
         options.method = options.method || 'GET';
         
         // Construct URL
-        options.url = `${API_URL}${url}`;
+        options.url = `${ThreadIt.apiUrl}${url}`;
     
         // Serialize JSON
         if (options.contentType === 'application/json') {

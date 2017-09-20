@@ -1,4 +1,4 @@
-const { CHANGE_REPLY, CLEAR_COMMENTS, GET_COMMENTS, SUBMIT_REPLY } = require('../actions/types');
+const Types = require('../actions/types');
 
 module.exports = comments;
 
@@ -8,7 +8,7 @@ function comments(state = {}, action) {
     let replies;
     
     switch (action.type) {
-        case CHANGE_REPLY:
+        case Types.CHANGE_REPLY:
             replies = {
                 ...state.replies,
                 [action.id]: action.reply
@@ -19,13 +19,13 @@ function comments(state = {}, action) {
                 replies
             };
         
-        case CLEAR_COMMENTS:
+        case Types.CLEAR_COMMENTS:
             return {};
         
-        case GET_COMMENTS:
+        case Types.GET_COMMENTS:
             return action.comments;
             
-        case SUBMIT_REPLY:
+        case Types.SUBMIT_REPLY:
             children = state.lookup[action.parent] || [];
             
             lookup = {

@@ -1,28 +1,24 @@
 const React = require('react');
+const ThreadIt = require('../services/threadit');
 
 module.exports = CommentList;
 
-function Comment({ comment, lookup, replies, onChangeReply, onSubmitReply }) {
-    const children = lookup[comment.id];
-    const reply = replies[comment.id];
-    
-    const text = () => ({
-        __html: comment.text
-    });
-    
-    const preview = () => ({
-        __html: T.previewComment(reply)  
-    });
+function Comment({ comment, ...baseProps }) {
+    const children = baseProps.lookup[comment.id];
+    const reply = baseProps.replies[comment.id];
     
     return (
         <div className="comment">
             <p dangerouslySetInnerHTML={text()}></p>
             <div className="reply">
                 { reply === undefined ? (
-                    <a onClick={() => onChangeReply(comment.id)}>Reply</a>
+                    <a onClick={() => baseProps.onChangeReply(comment.id)}>Reply</a>
                 ) : (
-                    <form onSubmit={(event) => onSubmitReply(comment.id, reply, event)}>
-                        <textarea onInput={(event) => onChangeReply(comment.id, event)} value={reply}></textarea>
+                    <form onSubmit={(event) => baseProps.onSubmitReply(comment.id, reply, event)}>
+                        <textarea 
+                            onInput={(event) => baseProps.onChangeReply(comment.id, event)} 
+                            value={reply}>
+                        </textarea>
                         <input type="submit" value="Reply" />
                         <div className="preview" dangerouslySetInnerHTML={preview()}>
                         </div>
@@ -35,15 +31,20 @@ function Comment({ comment, lookup, replies, onChangeReply, onSubmitReply }) {
                         <Comment 
                             key={child.id} 
                             comment={child} 
-                            lookup={lookup}
-                            replies={replies}
-                            onChangeReply={onChangeReply}
-                            onSubmitReply={onSubmitReply} />)
-                    }
+                            {...baseProps} />
+                    )}
                 </div>
             }
         </div>
     );
+    
+    function preview() {
+        return { __html: ThreadIt.previewComment(reply) };
+    }
+    
+    function text() {
+        return { __html: comment.text };
+    }
 }
 
 function CommentList({ comments, onChangeReply, onSubmitReply }) {

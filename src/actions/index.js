@@ -1,6 +1,6 @@
 // Local Modules
-const { CHANGE_POST, CHANGE_REPLY, CLEAR_COMMENTS, CREATE_THREAD, GET_COMMENTS, GET_THREADS, SUBMIT_REPLY } = require('./types'); 
 const Api = require('../services/api');
+const Types = require('./types'); 
 
 module.exports = {
     changeReply,
@@ -14,21 +14,21 @@ module.exports = {
 
 function changePost(event) {
     return {
-        type: CHANGE_POST,
+        type: Types.CHANGE_POST,
         post: event.target.value     
     };
 }
 
 function changeReply(id, event) {
     return {
-        type: CHANGE_REPLY,
+        type: Types.CHANGE_REPLY,
         reply: event ? event.target.value : '',
         id
     };
 }
 
 function clearComments() {
-    return { type: CLEAR_COMMENTS };
+    return { type: Types.CLEAR_COMMENTS };
 }
 
 function createThread(event, text) {
@@ -39,12 +39,12 @@ function createThread(event, text) {
             .createThread(text)
             .then(({ data }) => {
                 dispatch({
-                    type: CHANGE_POST,
+                    type: Types.CHANGE_POST,
                     post: ''
                 });
                 
                 dispatch({
-                    type: CREATE_THREAD,
+                    type: Types.CREATE_THREAD,
                     thread: data
                 });
             });
@@ -57,7 +57,7 @@ function getComments(id) {
             .getComments(id)
             .then(comments => {
                 dispatch({
-                    type: GET_COMMENTS,
+                    type: Types.GET_COMMENTS,
                     comments
                 });
             });
@@ -70,7 +70,7 @@ function getThreads() {
             .getThreads()
             .then(threads => {
                 dispatch({
-                    type: GET_THREADS,
+                    type: Types.GET_THREADS,
                     threads
                 });
             });
@@ -85,7 +85,7 @@ function submitReply(parent, text, event) {
             .createComment(parent, text)
             .then(comment => {
                 dispatch({
-                    type: SUBMIT_REPLY,
+                    type: Types.SUBMIT_REPLY,
                     comment,
                     parent
                 });
