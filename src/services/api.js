@@ -28,7 +28,13 @@ function createThread(text) {
         method: 'POST'
     };
     
-    return request('/threads/create', options);
+    return request('/threads/create', options)
+        .then(({ data }) => {
+            return {
+                ...data,
+                text: ThreadIt.trimTitle(data.text)
+            };
+        });
 }
 
 function getComments(id) {

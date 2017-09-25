@@ -37,7 +37,7 @@ function createThread(event, text) {
     return dispatch => {
         Api
             .createThread(text)
-            .then(({ data }) => {
+            .then(thread => {
                 dispatch({
                     type: Types.CHANGE_POST,
                     post: ''
@@ -45,7 +45,7 @@ function createThread(event, text) {
                 
                 dispatch({
                     type: Types.CREATE_THREAD,
-                    thread: data
+                    thread
                 });
             });
     };
