@@ -99,7 +99,7 @@ function request(url, options = {}) {
                     data = xhr.responseText;
                 }
                 
-                if (xhr.status === 500) {
+                if (xhr.status >= 400) {
                     reject(data, xhr);
                 } else {
                     resolve(data, xhr);

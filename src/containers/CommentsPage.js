@@ -16,10 +16,18 @@ class CommentsPage extends React.Component {
     }
     
     render() {
-        return <CommentList 
-            comments={this.props.comments}
-            onChangeReply={this.props.actions.changeReply}
-            onSubmitReply={this.props.actions.submitReply} />;
+        return (
+            <div>
+                {this.props.error ? (
+                    <div>{this.props.error}</div>
+                ) : (
+                    <CommentList 
+                        comments={this.props.comments}
+                        onChangeReply={this.props.actions.changeReply}
+                        onSubmitReply={this.props.actions.submitReply} />
+                )}
+            </div>
+        );
     }
 }
 
@@ -31,8 +39,9 @@ function mapDispatchToProps(dispatch) {
     };
 };
 
-function mapStateToProps({ comments }) {
+function mapStateToProps({ comments, error }) {
     return { 
-        comments 
+        comments,
+        error
     };
 }

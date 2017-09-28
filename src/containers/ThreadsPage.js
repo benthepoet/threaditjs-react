@@ -12,11 +12,17 @@ class ThreadsPage extends React.Component {
     
     render() {
         return (
-            <ThreadList 
-                onPostChange={this.props.actions.changePost}
-                onPostSubmit={this.props.actions.createThread}
-                post={this.props.post}
-                threads={this.props.threads} />
+            <div>
+                {this.props.error ? (
+                    <div>{this.props.error}</div>
+                ) : (
+                    <ThreadList 
+                        onPostChange={this.props.actions.changePost}
+                        onPostSubmit={this.props.actions.createThread}
+                        post={this.props.post}
+                        threads={this.props.threads} />
+                )}
+            </div>
         );
     }
 }
@@ -29,8 +35,9 @@ function mapDispatchToProps(dispatch) {
     };
 };
 
-function mapStateToProps({ post, threads }) {
+function mapStateToProps({ error, post, threads }) {
     return { 
+        error,
         post,
         threads 
     };

@@ -7,6 +7,7 @@ module.exports = {
     changePost,
     clearComments,
     createThread,
+    displayError,
     getComments,
     getThreads,
     submitReply
@@ -51,16 +52,28 @@ function createThread(event, text) {
     };
 }
 
+function displayError(dispatch) {
+    dispatch({ 
+        type: Types.DISPLAY_ERROR, 
+        message: 'An error occurred. Please refresh the page.'
+    });
+}
+
 function getComments(id) {
     return dispatch => {
         Api
             .getComments(id)
             .then(comments => {
                 dispatch({
+                    type: Types.CLEAR_ERROR
+                });
+                
+                dispatch({
                     type: Types.GET_COMMENTS,
                     comments
                 });
-            });
+            })
+            .catch(() => displayError(dispatch));
     };
 }
 
@@ -70,10 +83,15 @@ function getThreads() {
             .getThreads()
             .then(threads => {
                 dispatch({
+                    type: Types.CLEAR_ERROR
+                });
+                
+                dispatch({
                     type: Types.GET_THREADS,
                     threads
                 });
-            });
+            })
+            .catch(() => displayError(dispatch));
     };
 }
 
